@@ -10,19 +10,19 @@
             </router-link>
           </v-flex>
 
-          <v-flex xs4 md2 xl1>
+          <v-flex xs4 md2 xl1 class="pt-2px">
             <router-link to="/login" class="link">
               CONNEXION
             </router-link>
           </v-flex>
 
-          <v-flex xs3 md2 xl1>
+          <v-flex xs3 md2 xl1 class="pt-2px">
             <router-link to="/game" class="link">
               JEU
             </router-link>
           </v-flex>
 
-          <v-flex xs3 md2 xl1>
+          <v-flex xs3 md2 xl1 class="pt-2px">
             <router-link to="/scores" class="link">
               SCORES
             </router-link>
@@ -44,14 +44,18 @@
 .toolbar {
   background: #252344;
 
+  .pt-2px {
+    padding-top: 2px;
+  }
+
   .link {
     font-size: 15px;
     text-decoration: none;
     font-weight: bold;
-    color: #eee;
+    color: #888;
 
     >.v-icon {
-      color: #eee;
+      color: #888;
     }
 
     &.router-link-exact-active {

@@ -7,12 +7,13 @@
       height="auto"
       autoplay
     />
-    <v-footer fixed height="180px" class="text-xs-center">
+    <img id="poulpe_in_game" :src="poulpeImg" v-if="challenge" />
+    <v-footer fixed height="180px" class="text-xs-center" v-if="challenge">
       <p class="headline">
         Énigme
       </p>
       <p class="riddle">
-        {{riddle}}
+        {{challenge.riddle_text}}
       </p>
       <p class="small">
         Cliquez n'importe où pour envoyer une photo.
@@ -22,6 +23,13 @@
 </template>
 
 <style lang="scss" scoped>
+#poulpe_in_game {
+  position: absolute;
+  bottom: 180px;
+  right: 0;
+  max-width: 40%;
+}
+
 .v-footer {
   padding: 0 20px;
   display: flex;
@@ -52,11 +60,24 @@ export default {
   name: 'game',
   data() {
     return {
-      riddle: "Vous permet de voir plus loin que le bout de votre nez.",
+      challenge: null,
+      poulpeImg: null,
+      timer: null,
     };
   },
   mounted() {
     this.setVideoSrc(this.$store.state.cameraId);
+
+    axios.get('https://romal-server.scalingo.io/api/running-challenges/')
+    .then((runningChallengeResponse) => {
+      this.runningChallengeId = runningChallengeResponse.data[0].challenge;
+      
+      axios.get(`https://romal-server.scalingo.io/api/challenges/${this.runningChallengeId}`)
+      .then((challengeResponse) => {
+        this.challenge = challengeResponse.data;
+        this.poulpeImg = '/img/poulpe/waiting.png';
+      });
+    });
   },
   methods: {
     setVideoSrc(cameraId) {
@@ -85,16 +106,37 @@ export default {
 
       let data = canvas.toDataURL().split('data:image/png;base64,')[1];
 
+      if(this.timer !== null) {
+        clearTimeout(this.timer);
+      }
+
+      this.poulpeImg = '/img/poulpe/surprised.png';
+
       axios.post('https://romal-server.scalingo.io/api/challenges/6/solve/',
 				data,
 				{
 					headers: {
 						'Content-Disposition': 'form-data; name="file"; filename="upload.png"'
 					}
-				}
-			).then((response) => {
-				console.log(response);
-			});
+        })
+			.then((response) => {
+        console.log(response);
+        if (response.solved === true) {
+          this.poulpeImg = '/img/poulpe/joy.png';
+        } else {
+          this.poulpeImg = '/img/poulpe/angry.png';
+          this.timer = setTimeout(() => {
+            this.poulpeImg = '/img/poulpe/waiting.png';
+          }, 2000);
+        }
+      })
+      .catch((e) => {
+        console.error(e);
+        this.poulpeImg = '/img/poulpe/angry.png';
+        this.timer = setTimeout(() => {
+          this.poulpeImg = '/img/poulpe/waiting.png';
+        }, 2000);
+      })
     },
   },
   watch: {
