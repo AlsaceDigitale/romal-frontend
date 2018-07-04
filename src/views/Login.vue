@@ -32,7 +32,6 @@
               v-model="pseudo"
               :rules="pseudoRules"
               label="Pseudo"
-              required
             ></v-text-field>
             <v-text-field
               v-model="email"
@@ -54,10 +53,15 @@ export default {
   mounted() {
     if (this.$store.state.pseudo !== null) {
       this.pseudo = this.$store.state.pseudo;
-      this.email = this.$store.state.emaim;
     } else if (localStorage.getItem('pseudo')) {
-      this.pseudo = localStorage.getItem('pseudo') || '';
-      this.email = localStorage.getItem('email') || '';
+      this.pseudo = localStorage.getItem('pseudo');
+    }
+
+
+    if (this.$store.state.email !== null) {
+      this.email = this.$store.state.email;
+    } else if (localStorage.getItem('email')) {
+      this.email = localStorage.getItem('email');
     }
   },
 
@@ -65,8 +69,7 @@ export default {
     valid: false,
     pseudo: '',
     pseudoRules: [
-      v => !!v || 'Pseudo requis',
-      v => v.length <= 16 || 'Moins de 16 caractères'
+      v => v.length <= 12 || 'Moins de 13 caractères'
     ],
     email: '',
     emailRules: [

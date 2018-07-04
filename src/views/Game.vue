@@ -113,7 +113,24 @@ export default {
 
       this.poulpeImg = '/img/poulpe/surprised.png';
 
-      axios.post(`https://romal-server.scalingo.io/api/challenges/${this.runningChallengeId}/solve/`,
+      let url = `https://romal-server.scalingo.io/api/challenges/${this.runningChallengeId}/solve/`;
+      if(this.$store.state.pseudo || this.$store.state.email) {
+        url += '?';
+      }
+      
+      if(this.$store.state.pseudo) {
+        url += `player_pseudo=${encodeURIComponent(this.$store.state.pseudo)}`;
+        if(this.$store.state.email) {
+          url += '&';
+        }
+      }
+      
+      if(this.$store.state.email) {
+        url += `player_email=${encodeURIComponent(this.$store.state.email)}`;
+      }
+
+      axios.post(
+        url,
 				data,
 				{
 					headers: {
@@ -121,7 +138,6 @@ export default {
 					}
         })
 			.then((response) => {
-        console.log(response);
         if (response.solved === true) {
           this.poulpeImg = '/img/poulpe/joy.png';
         } else {

@@ -30,5 +30,13 @@ export default {
   components: {
     'header-section': Header,
   },
+  mounted() {
+    if(localStorage.getItem('pseudo')) {
+      this.$store.state.pseudo = localStorage.getItem('pseudo');
+    }
+    if(localStorage.getItem('email')) {
+      this.$store.state.email = localStorage.getItem('email');
+    }
+  }
 };
 </script>

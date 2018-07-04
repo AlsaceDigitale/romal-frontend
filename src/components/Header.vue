@@ -12,7 +12,7 @@
 
           <v-flex xs4 md2 xl1 class="pt-2px">
             <router-link to="/login" class="link">
-              CONNEXION
+              {{ $store.state.pseudo || 'CONNEXION' }}
             </router-link>
           </v-flex>
 
