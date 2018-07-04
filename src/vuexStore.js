@@ -2,6 +2,8 @@ export default {
   state: {
     cameraIds: [],
     cameraId: null,
+    pseudo: null,
+    email: null,
   },
   mutations: {
     setCameraIds(state, cameraIds) {
