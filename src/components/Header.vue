@@ -42,7 +42,7 @@
 
 <style lang="scss" scoped>
 .toolbar {
-  background: #6200ee;
+  background: #252344;
 
   .link {
     font-size: 15px;
@@ -55,9 +55,9 @@
     }
 
     &.router-link-exact-active {
-      color: #e65dff;
+      color: #ffffff;
       >.v-icon {
-        color: #e65dff;
+        color: #ffffff;
       }
     }
   }
