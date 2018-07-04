@@ -94,6 +94,7 @@ export default {
       });
     },
     capture($event) {
+      if (!this.runningChallengeId) return;
       const video = this.$refs.video;
 
       const w = video.videoWidth;
@@ -112,7 +113,7 @@ export default {
 
       this.poulpeImg = '/img/poulpe/surprised.png';
 
-      axios.post('https://romal-server.scalingo.io/api/challenges/6/solve/',
+      axios.post(`https://romal-server.scalingo.io/api/challenges/${this.runningChallengeId}/solve/`,
 				data,
 				{
 					headers: {
