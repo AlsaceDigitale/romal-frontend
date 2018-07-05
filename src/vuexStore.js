@@ -4,6 +4,7 @@ export default {
     cameraId: null,
     pseudo: null,
     email: null,
+    fullScreen: false,
   },
   mutations: {
     setCameraIds(state, cameraIds) {
