@@ -87,13 +87,15 @@
 <script>
 import Header from './components/Header.vue';
 
+const isSafari = !!navigator.userAgent.match(/Version\/[\d\.]+.*Safari/);
+
 export default {
   components: {
     'header-section': Header,
   },
   data() {
     return {
-      dialog: true,
+      dialog: !isSafari,
     };
   },
   methods: {
