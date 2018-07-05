@@ -1,7 +1,7 @@
 <template>
   <div ref="home" class="home story" @click="nextText">
     <img ref="img" src="img/sleeping.png"/>
-    <div class="text-box">
+    <div class="text-box" v-if="currentText.length > 0">
       <span>{{ currentText }}</span>
     </div>
   </div>
@@ -75,33 +75,67 @@ const storyTexts = [
   'C\'est parti ?',
 ];
 
+const conneries = [
+  'Les chatons c\'est mignon',
+  'Elle est où la poulette ?',
+  'Ils sont à quel étage les toilettes ?',
+  'C’est trop calme... J’aime pas trop beaucoup ça... J’préfère quand c’est un peu trop plus moins calme...',
+  'Nyyaaa~~',
+  'Tu penses que j\'peux avoir un truc à boire ? Fait chaud là haut...'
+]
+
 export default {
   name: 'home',
   data() {
     return {
+      finishedIntro: false,
       currentTextId: 0,
       currentText: storyTexts[0],
     };
   },
+  mounted() {
+    if(this.$store.state.finishedIntro) {
+      this.finishedIntro = true;
+
+      this.currentText = '';
+      this.$refs.home.classList.remove('story');
+      this.$refs.img.src = 'img/jaded.png';
+
+      let self = this;
+      (function loop() {
+        const rand = 10000 + (Math.random() - 0.5) * 5000;
+        setTimeout(() => {
+          self.currentText = conneries[Math.floor(Math.random() * conneries.length)];
+          setTimeout(() => {
+            self.currentText = '';
+            loop();
+          }, 400 + self.currentText.length * 30)
+        }, rand);
+      }());
+    }
+  },
   methods: {
     nextText() {
-      if (this.currentTextId < storyTexts.length) {
-        this.currentTextId += 1;
-        this.currentText = storyTexts[this.currentTextId];
-      }
+      if(!this.finishedIntro) {
+        if (this.currentTextId < storyTexts.length) {
+          this.currentTextId += 1;
+          this.currentText = storyTexts[this.currentTextId];
+        }
 
-      if (this.currentTextId === 3) {
-        this.$refs.home.classList.remove('story');
-      }
-      if (this.currentTextId === 4) {
-        this.$refs.img.src = 'img/tired.png';
-      }
-      if (this.currentTextId === 5) {
-        this.$refs.img.src = 'img/jaded.png';
-      }
+        if (this.currentTextId === 3) {
+          this.$refs.home.classList.remove('story');
+        }
+        if (this.currentTextId === 4) {
+          this.$refs.img.src = 'img/tired.png';
+        }
+        if (this.currentTextId === 5) {
+          this.$refs.img.src = 'img/jaded.png';
+        }
 
-      if (this.currentTextId === 11) {
-        this.$router.push('/game');
+        if (this.currentTextId === 11) {
+          this.$store.state.finishedIntro = true;
+          this.$router.push('/game');
+        }
       }
     },
   },
