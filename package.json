@@ -16,7 +16,7 @@
     "@vue/eslint-config-airbnb": "^3.0.0-rc.3",
     "axios": "^0.18.0",
     "http-server": "^0.11.1",
-    "node-sass": "^4.9.0",
+    "node-sass": "^4.13.1",
     "register-service-worker": "^1.0.0",
     "sass-loader": "^7.0.1",
     "vue": "^2.5.16",
